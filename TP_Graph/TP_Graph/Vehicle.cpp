@@ -10,7 +10,7 @@ using namespace std;
 
 
 Vehicle::Vehicle (const string& vehiculeType, int current, int max)
-	: vehiculeType_ { vehiculeType }, currentMileage_ { current }, maxMileage_ {max}
+	: vehiculeType_ ( vehiculeType ), currentMileage_ { current }, maxMileage_ {max}
 {}
 
 

@@ -18,10 +18,10 @@ public:
 	~Graph ();
 
 	void insertEdge ( const std::string&, const std::string&, const std::string&, const std::string&, int weight );
-	Graph& dijkstra ( const std::string& , const std::string& );
+	void dijkstra ( const std::string& , const std::string& );
 
 	void printGraph ( ) const;
-	void printShortestPath ( const std::string& ) const;
+	void printShortestPath () const;
 
 private:
 
@@ -29,24 +29,23 @@ private:
 
 		std::string			 identifier_;	// station name (vertex)
 		std::string			 type_;			// station type (vertex)
-		int					 weight_;		// weight to adj vertex
+		std::vector<int>	 adjWeight_;		// weight to adj vertex
 		std::vector<Vertex*> adjVertex_;	// adjacent vertex
-		//Vertex*				 path_;			// hold the previous vertex on shortest path
-
 
 		Vertex ( const std::string& id, const std::string& type )
-			:identifier_ ( identifier_ ), type_ ( type ) 
+			:identifier_ ( id ), type_ ( type ) 
 		{}
+
 	};
 
 	using vertexMap = std::map<std::string, Vertex*>;
 	vertexMap vMap_;
 	std::vector<Vertex*> allVertices_;
+	std::vector<int> path_;			// hold the previous vertex on shortest path
 
-	Graph& extractGraph ( std::vector<int>, const std::string&, const std::string& );
+	void extractGraph ( const std::vector<int>&, const std::string&, const std::string& );
 	Vertex* getVertex ( const std::string&, const std::string& type );
-	int getVertexIndex ( const std::string& );
-	void printPath ( const Vertex& ) const;
+	int getVertexIndex ( const std::string& ) const;
 	void clear ();
 };
 
