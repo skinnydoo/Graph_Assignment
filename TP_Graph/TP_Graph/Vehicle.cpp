@@ -27,16 +27,16 @@ void Vehicle::setVehiculeType ( const string& type ) {
 
 void Vehicle::setCurrentMileage ( int current ) {
 
-	if ( current <= 0 )
-		throw invalid_argument ( "Current mileage must be > 0" );
+	/*if ( current <= 0 )
+		throw invalid_argument ( "Current mileage must be > 0" );*/
 
 	currentMileage_ = current;
 }
 
 void Vehicle::setMaxMileage ( int max ) {
 
-	if ( max <= 0 )
-		throw invalid_argument ( "Max mileage must be > 0" );
+	/*if ( max < 0 )
+		throw invalid_argument ( "Max mileage must be > 0" );*/
 
 	maxMileage_ = max;
 

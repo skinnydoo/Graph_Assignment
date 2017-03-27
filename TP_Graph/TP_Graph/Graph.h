@@ -18,7 +18,10 @@ public:
 	~Graph ();
 
 	void insertEdge ( const std::string&, const std::string&, const std::string&, const std::string&, int weight );
-	void dijkstra ( const std::string& , const std::string& );
+	bool dijkstra ( const std::string& , const std::string& );
+	
+	inline std::string getDestinationType () const;
+	inline int getTotalDistanceToStation () const;
 
 	void printGraph ( ) const;
 	void printShortestPath () const;
@@ -42,12 +45,28 @@ private:
 	vertexMap vMap_;
 	std::vector<Vertex*> allVertices_;
 	std::vector<int> path_;			// hold the previous vertex on shortest path
+	int totalDistanceToStation_ { 0 };
 
-	void extractGraph ( const std::vector<int>&, const std::string&, const std::string& );
+	bool extractGraph ( const std::vector<int>&, const std::string&, const std::string& );
 	Vertex* getVertex ( const std::string&, const std::string& type );
 	int getVertexIndex ( const std::string& ) const;
 	void clear ();
 };
+
+
+
+inline std::string Graph::getDestinationType () const {
+
+	if ( !path_.empty () )
+		return allVertices_[ path_[ path_.size () - 1 ] ]->type_;
+
+	return "";
+}
+
+inline int Graph::getTotalDistanceToStation () const {
+
+	return totalDistanceToStation_;
+}
 
 ///////////////////////////////////////////////////////////////////////////////
 //@}

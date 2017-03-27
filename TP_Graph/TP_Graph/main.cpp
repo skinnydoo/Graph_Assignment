@@ -72,6 +72,7 @@ int main () {
 
 							cout << "Error. Not an integer" << endl;
 							cin.clear ();
+							cin.ignore ( 256, '\n' );
 						} else
 							cout << "Max mileage inserted : " << maxAutonomy << endl;
 
@@ -93,6 +94,7 @@ int main () {
 
 							cout << "Error. Not an integer" << endl;
 							cin.clear ();
+							cin.ignore ( 256, '\n' );
 						} else
 							cout << "Current mileage inserted : " << currentAutonomy << endl;
 
@@ -156,7 +158,7 @@ int main () {
 						}
 
 						// Find the shortest path
-						//shortestPath ( graph, car, source, target );
+						shortestPath ( graph, car, source, target );
 
 					} else
 
@@ -273,4 +275,43 @@ void readGraph ( Graph* graph ) {
 
 	cout << "\nReading Graph..." << endl;
 	graph->printGraph ();
+}
+
+// enable finding shortest path 
+void shortestPath ( Graph* graph, Vehicle* myCar, const string& source, const string& target ) {
+
+	if ( graph->dijkstra ( source, target ) ) {
+
+		if ( graph->getDestinationType () == myCar->getVehiculeType () ) {
+
+
+			if ( myCar->getCurrentMileage () >= graph->getTotalDistanceToStation () ) {
+
+				cout << "\nTotal distance length : " << graph->getTotalDistanceToStation () << endl
+					<< "Current autonomy of your vehicule : " << myCar->getCurrentMileage () << endl;
+
+				// Printing the shortest path
+				graph->printShortestPath ();
+
+				int newCurrAutonomy = myCar->getCurrentMileage () - graph->getTotalDistanceToStation ();
+				myCar->setCurrentMileage ( newCurrAutonomy );
+				cout << "\nYour current autonomy is now : " << myCar->getCurrentMileage () << endl;
+			} else {
+
+				cout << "\nYou won't be able to get to that station" << endl
+					<< "Total distance length : " << graph->getTotalDistanceToStation () << endl
+					<< "Your current autonomy is : " << myCar->getCurrentMileage () << endl
+					<< "Your max autonomy is : " << myCar->getMaxMileage () << endl;
+			}
+
+		} else {
+
+			cout << "This station has no fuel type compatible with your vehicule." << endl
+				<< "Station fuel type : " << graph->getDestinationType() << endl
+				<< "Your vehicule fuel type : " << myCar->getVehiculeType() << endl;
+
+		}
+	
+	}else
+		cout << "\n\nERROR! No path exist from " << source << " to " << target << endl;
 }

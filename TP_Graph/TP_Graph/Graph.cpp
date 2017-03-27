@@ -52,14 +52,14 @@ Graph::Vertex* Graph::getVertex ( const string& vertexName, const string& type )
 	return it->second;
 }
 
-void Graph::dijkstra ( const string& source, const string& target ) {
+bool Graph::dijkstra ( const string& source, const string& target ) {
 
 
 	auto& it1 = vMap_.find ( source );
 	if ( it1 == vMap_.end () ) {
 
 		cout << source << " is not a vertex in this graph" << endl;
-		return;
+		return false;
 	}
 
 
@@ -67,7 +67,7 @@ void Graph::dijkstra ( const string& source, const string& target ) {
 	if ( it2 == vMap_.end () ) {
 
 		cout << target << " is not a vertex in this graph" << endl;
-		return;
+		return false;
 	}
 
 	Vertex* start = it1->second;
@@ -87,7 +87,9 @@ void Graph::dijkstra ( const string& source, const string& target ) {
 		// quon arrive a la destination
 		if ( u == it2->second ) {
 
-			extractGraph ( path_, source, target );
+			totalDistanceToStation_ = distance[ getVertexIndex ( u->identifier_ ) ];
+			return extractGraph ( path_, source, target );
+			
 		}
 
 		vList.pop_front ();
@@ -95,7 +97,7 @@ void Graph::dijkstra ( const string& source, const string& target ) {
 		for ( size_t i = 0; i < u->adjVertex_.size (); ++i ) {
 
 			Vertex* v = u->adjVertex_[ i ];
-			int weight = u->adjVertex_[ i ]->adjWeight_[i];
+			int weight = u->adjWeight_[i];
 
 			// if there is a shortest path from u to v
 			if ( distance[ getVertexIndex ( v->identifier_ ) ] > distance[ getVertexIndex ( u->identifier_ ) ] + weight ) {
@@ -108,10 +110,12 @@ void Graph::dijkstra ( const string& source, const string& target ) {
 
 		} 
 	}
+
+	return false;
 }
 
 
-void Graph::extractGraph ( const vector<int>& path, const std::string& source, const std::string& target ) {
+bool Graph::extractGraph ( const vector<int>& path, const std::string& source, const std::string& target ) {
 
 	/*Reading the shortest path from source to target by reverse iteration*/
 
@@ -128,6 +132,11 @@ void Graph::extractGraph ( const vector<int>& path, const std::string& source, c
 
 	path_.clear ();
 	path_ = tmpPath;
+
+	if ( !path.empty () )
+		return true;
+
+	return false;
 
 }
 
@@ -171,3 +180,4 @@ void Graph::printShortestPath () const {
 
 	cout << endl;
 }
+
